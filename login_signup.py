@@ -214,7 +214,7 @@ def gui_signup():
     TextboxPassword.config(bg='black')
     TextboxPassword.config(fg='white')
 
-    LabelPasswordReentered = Label(FrameSignup, text='Reingrese Contraseña')
+    LabelPasswordReentered = Label(FrameSignup, text='Reenter password')
     LabelPasswordReentered.grid(row=2, column=0, sticky='w')
     LabelPasswordReentered.config(bg='black')
     LabelPasswordReentered.config(fg='white')
