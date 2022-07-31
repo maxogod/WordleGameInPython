@@ -1,6 +1,6 @@
 # Wordle-Game
 
-Wordle on python.
+Wordle in python.
 (Run WORDLE_GAME.py to run the game)
 
 English adaptation of TP_WORDLE repository
