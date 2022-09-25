@@ -1,10 +1,10 @@
 
-def read_config_file(config):
+def __read_config_file(config):
     line = config.readline()
     return line.rstrip("\n").split(",") if line else ['', '']
 
 
-def config_dic_mod(config_file, config_dic):
+def __config_dic_mod(config_file, config_dic):
     """
     receives config_dic and config_file(already open),
     modifies config_dic based off of what it reads from the csv file.
@@ -14,7 +14,7 @@ def config_dic_mod(config_file, config_dic):
     min_matches_max = 2
     max_matches_max = 10
     try:
-        config, value = read_config_file(config_file)
+        config, value = __read_config_file(config_file)
     except ValueError:
         config, value = ['', '']
 
@@ -34,7 +34,7 @@ def config_dic_mod(config_file, config_dic):
                 config_dic['RESET_MATCHES_FILE'] = [True, 'by config.']
 
         try:
-            config, value = read_config_file(config_file)
+            config, value = __read_config_file(config_file)
         except ValueError:
             config, value = ['', '']
 
@@ -52,7 +52,7 @@ def config_main():
     config_final = {}
     try:
         with open("used_files/config_file.csv") as config:
-            config_final = config_dic_mod(config, config_default)
+            config_final = __config_dic_mod(config, config_default)
     except FileNotFoundError:
         config_final = config_default
     return config_final

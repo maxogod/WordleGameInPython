@@ -3,9 +3,7 @@ from tkinter import messagebox
 
 
 class Players:
-    """
-    Class with no methods, it's just to save the name of the players.
-    """
+    # This was my first ever class btw xD
     p1 = ''
     p2 = ''
 
@@ -16,40 +14,40 @@ class Players:
             Players.p2 = username
 
 
-def read_file(filename):
+def __read_file(filename):
     line = filename.readline()
     return line.rstrip('\n').split(',') if line else ['', '']
 
 
-def user_validation(username, password, username_only):
+def __user_validation(username, password, username_only):
     """
     opens users.csv and checks if the received info matches the info in the file
     (if username_only is True checks only the username else, checks the whole info),
     returns a bool.
     """
     with open("used_files/users.csv") as users_file:
-        read_username, read_password = read_file(users_file)
+        read_username, read_password = __read_file(users_file)
         while read_username and username != read_username:
-            read_username, read_password = read_file(users_file)
+            read_username, read_password = __read_file(users_file)
 
     return (username == read_username if username_only
             else username == read_username and password == read_password and Players.p1 != username)
 
 
-def emergentwindow(username, password):
+def __emergentwindow(username, password):
     """
     if user_validation returns True invokes successwindow else invokes errorwindow.
     """
-    if user_validation(username, password, False) and username != Players.p1:
+    if __user_validation(username, password, False) and username != Players.p1:
         Players(username)
-        successwindow()
+        __successwindow()
     elif username == Players.p1:
-        errorwindow('already logged')
+        __errorwindow('already logged')
     else:
-        errorwindow('wrong info')
+        __errorwindow('wrong info')
 
 
-def successwindow():
+def __successwindow():
     if Players.p2 == '':
         messagebox.showinfo('Success', 'Player 1 successfully logged!\n(Player 2, please log-in)')
     else:
@@ -57,31 +55,31 @@ def successwindow():
                                        '(Close the log-in window to start playing!)')
 
 
-def errorwindow(msg_type):
+def __errorwindow(msg_type):
     possible_cases = {'already logged': 'Error, Username is already logged.',
                       'wrong info': 'Error, Username or password is not correct.'}
     messagebox.showerror('Error', possible_cases[msg_type])
 
 
-def apply_login(username, password, username_entry, password_entry):
+def __apply_login(username, password, username_entry, password_entry):
     """
     is invoked by the login button, and invokes emergentwindow.
     also cleans the username and password entries.
     """
-    emergentwindow(username, password)
+    __emergentwindow(username, password)
     username_entry.delete(0, END)
     password_entry.delete(0, END)
 
 
-def apply_signin(username, password, password2, RootSignup, file_name):
+def __apply_signin(username, password, password2, RootSignup, file_name):
     """
     is invoked by the signup button, invokes register_new_user(), and closes the signup window.
     """
-    register_new_user(username, password, password2, file_name)
+    __register_new_user(username, password, password2, file_name)
     RootSignup.destroy()
 
 
-def emergentwindow_signup(msg_type, username, msg):
+def __emergentwindow_signup(msg_type, username, msg):
     possible_msg = {'invalid_username': f'Username {username} is invalid. '
                                         'It should have between 4 and 15 chars and be formed '
                                         'solely by letters, numbers, and _',
@@ -99,26 +97,26 @@ def emergentwindow_signup(msg_type, username, msg):
         messagebox.showwarning('warning', possible_msg[msg])
 
 
-def register_new_user(username, password, password2, file_name):
+def __register_new_user(username, password, password2, file_name):
     """
     saves new user in users.csv, in case of error invokes emergentwindow_signup
     giving it the corresponding info.
     """
-    if not validate_username(username):
-        emergentwindow_signup('error', username, 'invalid_username')
+    if not __validate_username(username):
+        __emergentwindow_signup('error', username, 'invalid_username')
     elif password != password2:
-        emergentwindow_signup('error', username, 'diff_passwords')
-    elif not validate_password(password):
-        emergentwindow_signup('error', username, 'invalid_passwords')
-    elif not user_validation(username, password, True):
+        __emergentwindow_signup('error', username, 'diff_passwords')
+    elif not __validate_password(password):
+        __emergentwindow_signup('error', username, 'invalid_passwords')
+    elif not __user_validation(username, password, True):
         with open(file_name, 'a', encoding="utf8") as users_file:
             users_file.write(f'{username},{password}\n')
-        emergentwindow_signup('info', username, 'user_created')
+        __emergentwindow_signup('info', username, 'user_created')
     else:
-        emergentwindow_signup('warning', username, 'already_registered')
+        __emergentwindow_signup('warning', username, 'already_registered')
 
 
-def validate_username(username):
+def __validate_username(username):
     """
     validates that the username has an adequate length and that is formed only by
     letters, numbers, and _ .
@@ -135,7 +133,7 @@ def validate_username(username):
     return valid_name
 
 
-def validate_password(password):
+def __validate_password(password):
     """
     validates that the password has an adequate length and that is formed by
     at least one lowercase, uppercase, number and _ or -, also makes sure it doesn't have
@@ -173,7 +171,7 @@ def validate_password(password):
     return valid_pw
 
 
-def gui_signup():
+def __gui_signup():
     """
     creates a gui for registering new players.
     """
@@ -226,14 +224,14 @@ def gui_signup():
 
     ButtonSignup = Button(RootSignup,
                           text="Enter",
-                          command=lambda: apply_signin(UsernameSignup.get(),
-                                                       PasswordSignup.get(),
-                                                       PasswordReentered.get(),
-                                                       RootSignup, 'used_files/users.csv'))
+                          command=lambda: __apply_signin(UsernameSignup.get(),
+                                                         PasswordSignup.get(),
+                                                         PasswordReentered.get(),
+                                                         RootSignup, 'used_files/users.csv'))
     ButtonSignup.grid(row=5, column=2)
 
 
-def gui():
+def __gui():
     """
     log-in gui.
     has a button to invoke gui_signup.
@@ -278,14 +276,14 @@ def gui():
 
     # Buttons
     ButtonEnter = Button(root, text='Enter',
-                         command=lambda: apply_login(UsernameEntry.get(),
-                                                     PasswordEntry.get(),
-                                                     UsernameEntry,
-                                                     PasswordEntry))
+                         command=lambda: __apply_login(UsernameEntry.get(),
+                                                       PasswordEntry.get(),
+                                                       UsernameEntry,
+                                                       PasswordEntry))
     ButtonEnter.grid(row=5, column=1, padx=5, pady=5)
 
     ButtonRegister = Button(root, text='Register',
-                            command=gui_signup)
+                            command=__gui_signup)
     ButtonRegister.grid(row=5, column=3, padx=5, pady=5)
 
     ButtonOut = Button(root, text='Exit login',
@@ -299,6 +297,6 @@ def main_login():
     """
     main function that runs the whole module, and returns a list with the name of the players [p1, p2]
     """
-    gui()
+    __gui()
     list_players = [Players.p1, Players.p2]
     return list_players

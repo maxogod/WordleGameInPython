@@ -1,13 +1,13 @@
-from normalize_words import normalizing_word
+from normalize_words import *
 
 
-def add_word_to_dict(dict_words, word, word_length, index_file):
+def __add_word_to_dict(dict_words, word, word_length, index_file):
     """
     receives the dict_words and adds the received word(upper) to it as a key
     if it is indeed a word and has the same length as word_length, and the value would be
     the number of times that word appears in the current file being read.
     """
-    only_letters_word = only_letters(word)
+    only_letters_word = __only_letters(word)
     if (only_letters_word.isalpha() and
             (len(only_letters_word) == word_length)):
         if only_letters_word not in dict_words.keys():
@@ -18,7 +18,7 @@ def add_word_to_dict(dict_words, word, word_length, index_file):
             dict_words[only_letters_word][index_file] += 1
 
 
-def only_letters(word):
+def __only_letters(word):
     """
     normalizes word and gets rid of punctuation characters.
     """
@@ -33,8 +33,8 @@ def only_letters(word):
     return normalized_word.upper()
 
 
-def get_words_from_file(dict_words, file_name, index_file,
-                        word_length):
+def __get_words_from_file(dict_words, file_name, index_file,
+                          word_length):
     """
     reads file and invokes add_word_to_dict per read word.
     """
@@ -43,11 +43,11 @@ def get_words_from_file(dict_words, file_name, index_file,
             list_words = line.rstrip("\n").split(' ')
 
             for word in list_words:
-                add_word_to_dict(dict_words, word,
-                                 word_length, index_file)
+                __add_word_to_dict(dict_words, word,
+                                   word_length, index_file)
 
 
-def create_csv_file(dict_words, amount_of_files):
+def __create_csv_file(dict_words, amount_of_files):
     """
     creates used_words.csv and writes all the info from dict_words on it.
     """
@@ -73,9 +73,9 @@ def get_dict_words(list_files, word_length):
     """
     dict_words = {}
     for index_file in range(len(list_files)):
-        get_words_from_file(dict_words, list_files[index_file],
-                            index_file, word_length)
+        __get_words_from_file(dict_words, list_files[index_file],
+                              index_file, word_length)
 
-    create_csv_file(dict_words, len(list_files))
+    __create_csv_file(dict_words, len(list_files))
 
     return dict_words

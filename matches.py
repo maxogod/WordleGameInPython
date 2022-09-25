@@ -1,4 +1,4 @@
-from csv_file import create_csv_file
+from csv_file import *
 
 
 def update_list_matches(list_matches, current_match, dict_info_players, match_date, match_time):
